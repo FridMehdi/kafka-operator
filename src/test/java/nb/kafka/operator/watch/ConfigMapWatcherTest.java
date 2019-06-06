@@ -1,23 +1,27 @@
 package nb.kafka.operator.watch;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import static nb.common.App.metrics;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import nb.kafka.operator.util.PropertyUtil;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.WatchEventBuilder;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import nb.kafka.operator.AppConfig;
 import nb.kafka.operator.Topic;
-
-import java.util.concurrent.CountDownLatch;
-
-import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import io.fabric8.kubernetes.client.KubernetesClientException;
+import nb.kafka.operator.util.PropertyUtil;
 
 
 public class ConfigMapWatcherTest {
@@ -35,7 +39,6 @@ public class ConfigMapWatcherTest {
 
   @AfterEach
   void tearDown() {
-    metrics().remove("managed-topics");
     server.after();
     server = null;
   }

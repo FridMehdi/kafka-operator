@@ -1,6 +1,5 @@
 package nb.kafka.operator;
 
-import static nb.common.App.metrics;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeast;
@@ -33,7 +32,7 @@ import nb.kafka.operator.watch.AbstractTopicWatcher;
 
 public class KafkaOperatorTest {
   private KafkaOperator operator;
-  private AppConfig config = KafkaOperator.loadConfig();
+  private AppConfig config = AppConfig.defaultConfig();
 
   @BeforeEach
   void setUp() {
@@ -44,7 +43,6 @@ public class KafkaOperatorTest {
   @AfterEach
   void tearDown() {
     operator = null;
-    metrics().remove("managed-topics");
   }
 
   @Test
